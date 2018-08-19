@@ -16,6 +16,7 @@ from datetime import datetime
 import calendar
 import os
 from requests_toolbelt import MultipartEncoder
+from re import search
 
 # Turn off InsecureRequestWarning
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -1055,3 +1056,15 @@ class InstagramAPI:
             except KeyError as e:
                 break
         return liked_items
+
+    def getUserId(self,username):
+        url = "https://instagram.com/{}/".format(str(username))
+        window = urllib.urlopen(url)
+        lines = window.read()
+        matchObj = search( r'"id":"(\d*)"', lines)
+        if matchObj:
+            return int(matchObj.group(1))
+        else:
+            return False
+
+
